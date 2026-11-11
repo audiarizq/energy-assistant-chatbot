@@ -1,0 +1,29 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python cache and test cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Local database and runtime files
+chat_history.db
+*.db-shm
+*.db-wal
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Generated evaluation output
+evaluate.csv
+
+# IDE and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,34 @@
+{
+  "id": "energybot",
+  "name": "Asisten Hemat Energi",
+  "bot_name": "EnergyBot",
+  "avatar": "⚡",
+  "color": "#0f766e",
+  "description": "Membantu menghitung konsumsi energi, estimasi biaya, dan penghematan listrik.",
+  "greeting": "Halo! Saya EnergyBot, asisten hemat energi. Saya dapat menghitung konsumsi listrik, memperkirakan biaya, membandingkan perangkat, dan memberi tips penghematan.",
+  "suggestions": [
+    "Hitung kipas 50 Watt selama 10 jam sehari",
+    "Hitung biaya 100 kWh dengan tarif Rp1.500/kWh",
+    "Bagaimana cara menghemat listrik?",
+    "Apa perbedaan Watt dan kWh?"
+  ],
+  "fallback": [
+    "Maaf, saya belum memahami pertanyaan tersebut. Coba tanyakan konsumsi, biaya, perangkat, atau penghematan listrik.",
+    "Saya berfokus pada pengelolaan energi listrik. Contoh: hitung konsumsi lampu 15 Watt selama 12 jam."
+  ],
+  "intents": [
+    {"tag":"greeting","patterns":["halo","hai energybot","selamat pagi","selamat siang","selamat sore","apa kabar"],"responses":["Halo! Ada yang ingin kamu hitung atau ketahui tentang penggunaan listrik?","Hai! Saya siap membantu mengelola energi listrik dengan lebih efisien."]},
+    {"tag":"bot_introduction","patterns":["apa itu energybot","fungsi chatbot ini","apa saja yang bisa kamu lakukan","cara menggunakan energybot","kamu siapa"],"responses":["EnergyBot membantu menghitung konsumsi listrik, memperkirakan biaya, membandingkan perangkat, dan memberikan tips penghematan."]},
+    {"tag":"energy_consumption","patterns":["hitung konsumsi listrik","berapa konsumsi listrik ac","berapa kwh televisi","hitung kipas watt jam","konsumsi energi perangkat","hitung penggunaan listrik"],"responses":["Saya akan menghitung konsumsi berdasarkan daya Watt dan durasi penggunaan."]},
+    {"tag":"electricity_cost","patterns":["berapa biaya listrik","hitung biaya listrik","estimasi biaya energi","biaya listrik setiap bulan","konsumsi kwh berapa biayanya","tarif listrik per kwh"],"responses":["Estimasi biaya energi dihitung dari konsumsi kWh dikalikan tarif listrik."]},
+    {"tag":"appliance_information","patterns":["berapa daya listrik kulkas","televisi biasanya berapa watt","ac menggunakan berapa watt","informasi daya perangkat","perbedaan watt dan kwh","apa itu watt dan kwh"],"responses":["Watt adalah satuan daya, sedangkan kWh adalah energi yang digunakan selama periode tertentu. Gunakan label perangkat untuk daya yang paling akurat."]},
+    {"tag":"energy_comparison","patterns":["mana lebih hemat kipas atau ac","bandingkan dua perangkat","bandingkan dua lampu","perangkat mana paling boros","apakah led lebih hemat"],"responses":["Saya dapat membandingkan konsumsi dua perangkat jika daya dan durasi penggunaannya tersedia."]},
+    {"tag":"energy_saving_tips","patterns":["bagaimana cara menghemat listrik","tips hemat energi","bagaimana menghemat listrik ac","bagaimana menghemat listrik kulkas","apakah mematikan perangkat menghemat listrik"],"responses":["Matikan perangkat yang tidak digunakan, gunakan lampu LED, manfaatkan cahaya alami, dan gunakan pengaturan hemat energi bila tersedia."]},
+    {"tag":"saving_recommendation","patterns":["bagaimana mengurangi tagihan listrik","penggunaan listrik terlalu tinggi","saya ingin menghemat persen","perangkat apa yang harus dikurangi","rekomendasi hemat energi"],"responses":["Saya dapat membuat rekomendasi berdasarkan perangkat dengan konsumsi terbesar, durasi pemakaian, dan target penghematan."]},
+    {"tag":"energy_analysis","patterns":["analisis penggunaan listrik saya","total listrik rumah saya","analisis konsumsi energi","apakah penggunaan listrik meningkat","distribusi konsumsi energi"],"responses":["Analisis dapat menampilkan total kWh, kontribusi setiap perangkat, dan perangkat dengan konsumsi tertinggi."]},
+    {"tag":"goodbye","patterns":["terima kasih","sampai jumpa","dadah","sudah cukup","selesai"],"responses":["Sama-sama. Semoga informasi ini membantu penggunaan listrik yang lebih efisien.","Sampai jumpa. Gunakan listrik secara bijak!"]},
+    {"tag":"help","patterns":["apa yang bisa saya tanyakan","bantu saya menggunakan chatbot","contoh perintah","cara memakai chatbot","tolong bantu"],"responses":["Contoh: Hitung konsumsi lampu 12 Watt selama 8 jam sehari, atau hitung biaya 100 kWh dengan tarif Rp1.500/kWh."]},
+    {"tag":"clarification","patterns":["hitung listrik saya","hitung biaya ac","bandingkan perangkat saya","data saya belum lengkap"],"responses":["Saya masih membutuhkan beberapa informasi agar hasilnya dapat dihitung. Mohon lengkapi parameter yang belum disebutkan."]},
+    {"tag":"out_of_scope","patterns":["siapa presiden indonesia","buatkan puisi cinta","bagaimana memperbaiki motor","ceritakan lelucon","resep makanan"],"responses":["Maaf, topik tersebut berada di luar cakupan EnergyBot. Saya dirancang untuk membantu pengelolaan dan penghematan energi listrik."]}
+  ]
+}

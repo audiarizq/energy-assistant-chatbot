@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{{ theme.bot_name }} &middot; EnergyBot{% endblock %}
+{% block color %}{{ theme.color }}{% endblock %}
+
+{% block content %}
+<section class="chat-card">
+  <button id="btn-clear" class="btn-clear" type="button">Hapus riwayat</button>
+
+  <div class="chat-header">
+    <div class="avatar">{{ theme.avatar }}</div>
+    <div class="chat-title">
+      <h1>{{ theme.bot_name }}</h1>
+      <p>{{ theme.name }}</p>
+    </div>
+  </div>
+
+  <!-- Area pesan: diisi oleh JavaScript -->
+  <div id="messages" class="messages" aria-live="polite"></div>
+
+  <!-- Saran pertanyaan cepat -->
+  <div class="suggestions">
+    {% for s in theme.suggestions %}
+    <button type="button" class="chip">{{ s }}</button>
+    {% endfor %}
+  </div>
+
+  <form id="chat-form" class="chat-form" autocomplete="off">
+    <input id="chat-input" type="text" placeholder="Ketik pesan..." maxlength="500" required>
+    <button type="submit">Kirim</button>
+  </form>
+
+  <label class="learn-toggle">
+    <input type="checkbox" id="learn-mode"> Mode belajar
+  </label>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Data dari server (Jinja2) diteruskan ke JavaScript dengan filter tojson
+  const THEME = {
+    id: {{ theme.id | tojson }},
+    avatar: {{ theme.avatar | tojson }},
+    greeting: {{ theme.greeting | tojson }}
+  };
+</script>
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

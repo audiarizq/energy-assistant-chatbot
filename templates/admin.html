@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Statistik {{ theme.name }}{% endblock %}
+{% block color %}{{ theme.color }}{% endblock %}
+
+{% block content %}
+<section class="admin">
+  <div class="admin-heading">
+    <div>
+      <p class="eyebrow">DASHBOARD ADMIN</p>
+      <h1>{{ theme.avatar }} Statistik &middot; {{ theme.name }}</h1>
+      <p class="muted">Pantau performa chatbot dan temukan pertanyaan yang belum dipahami bot. Ambang pengenalan: <code>{{ threshold }}</code>.</p>
+    </div>
+    <a class="btn-primary" href="{{ url_for('chat_page', theme_id=theme.id) }}">&larr; Kembali ke chat</a>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat"><span class="stat-label">TOTAL PERTANYAAN</span><span class="stat-num">{{ summary.total }}</span><span class="stat-note">Semua pertanyaan pengguna</span></div>
+    <div class="stat stat-success"><span class="stat-label">TINGKAT DIKENALI</span><span class="stat-num">{{ summary.persen_dikenali }}%</span><span class="stat-note">Berhasil dipahami bot</span></div>
+    <div class="stat stat-warning"><span class="stat-label">TIDAK DIKENALI</span><span class="stat-num">{{ summary.tidak_dikenali }}</span><span class="stat-note">Perlu ditinjau</span></div>
+    <div class="stat"><span class="stat-label">JUMLAH SESI</span><span class="stat-num">{{ summary.sesi }}</span><span class="stat-note">Pengunjung unik</span></div>
+  </div>
+
+  <div class="section-heading">
+    <div><h2>Statistik per intent</h2><p class="muted">Jumlah pertanyaan berdasarkan kategori yang dikenali.</p></div>
+  </div>
+  {% if stats %}
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th>Intent</th><th>Jumlah</th><th>Proporsi</th></tr></thead>
+    <tbody>
+    {% for s in stats %}
+      <tr>
+        <td>{{ s.intent }}</td>
+        <td>{{ s.jumlah }}</td>
+        <td><div class="bar"><span style="width: {{ (100 * s.jumlah / summary.total) | round(1) }}%"></span></div></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% else %}
+  <p class="muted">Belum ada percakapan untuk tema ini.</p>
+  {% endif %}
+
+  <div class="section-heading unknown-heading">
+    <div><h2>Pertanyaan tidak dikenali</h2><p class="muted">Pertanyaan terbaru yang dapat digunakan untuk memperkaya pola chatbot.</p></div>
+  </div>
+  {% if unknown %}
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th>Pertanyaan</th><th>Skor tertinggi</th><th>Waktu</th><th></th></tr></thead>
+    <tbody>
+    {% for u in unknown %}
+      <tr><td class="question-text">{{ u.text }}</td><td>{{ "%.2f" | format(u.score or 0) }}</td><td>{{ u.created_at }}</td><td><button class="copy-question" type="button" data-question="{{ u.text }}">Salin</button></td></tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% else %}
+  <p class="muted">Tidak ada. Semua pertanyaan dikenali.</p>
+  {% endif %}
+
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.querySelectorAll('.copy-question').forEach((button) => {
+    button.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(button.dataset.question);
+      const original = button.textContent;
+      button.textContent = 'Tersalin';
+      setTimeout(() => { button.textContent = original; }, 1200);
+    });
+  });
+</script>
+{% endblock %}

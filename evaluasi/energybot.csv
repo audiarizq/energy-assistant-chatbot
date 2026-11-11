@@ -1,0 +1,21 @@
+kalimat,intent
+halo energybot,greeting
+selamat pagi,greeting
+kamu siapa,bot_introduction
+apa saja yang bisa kamu lakukan,bot_introduction
+hitung konsumsi listrik,clarification
+Hitung lampu 15 Watt selama 12 jam sehari,energy_consumption
+berapa konsumsi listrik ac,clarification
+berapa biaya listrik,clarification
+Hitung biaya 100 kWh dengan tarif Rp1.500/kWh,electricity_cost
+tarif listrik per kwh,clarification
+berapa daya listrik kulkas,appliance_information
+apa perbedaan Watt dan kWh,appliance_information
+mana lebih hemat kipas atau ac,energy_comparison
+bandingkan dua perangkat,energy_comparison
+bagaimana cara menghemat listrik,energy_saving_tips
+tips hemat energi,energy_saving_tips
+bagaimana mengurangi tagihan listrik,saving_recommendation
+analisis penggunaan listrik saya,energy_analysis
+terima kasih,goodbye
+buatkan puisi cinta,out_of_scope
