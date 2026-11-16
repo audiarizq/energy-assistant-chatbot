@@ -1,70 +1,53 @@
-"""Versi command-line EnergyBot.
+"""
+Chat dengan bot langsung di terminal, tanpa browser.
 
-Jalankan dari folder proyek dengan:
-    python cli.py
-
-Tema dapat diganti jika proyek memiliki lebih dari satu file tema:
-    python cli.py --theme energybot
+Contoh:
+    python cli.py                  # tema kampus
+    python cli.py --tema kuliner
+    python cli.py --debug          # tampilkan 3 kandidat intent teratas
+Ketik 'keluar' untuk berhenti.
 """
 import argparse
-import os
-import sys
 from pathlib import Path
 
-from chatbot import EnergyBotEngine, load_themes
-
+from chatbot import ChatbotEngine, load_themes
 
 BASE_DIR = Path(__file__).resolve().parent
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Chat dengan chatbot tematik melalui terminal")
-    parser.add_argument("--theme", default="energybot", help="ID tema yang digunakan (default: energybot)")
-    parser.add_argument(
-        "--threshold",
-        type=float,
-        default=float(os.environ.get("THRESHOLD", "0.45")),
-        help="Ambang pengenalan intent (default: 0.45)",
-    )
-    return parser.parse_args()
-
-
 def main():
-    # Terminal Windows lama sering memakai cp1252 dan tidak dapat mencetak
-    # emoji avatar dari file tema.
-    if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    parser = argparse.ArgumentParser(description="Chatbot tematik di terminal")
+    parser.add_argument("--tema", default="energybot", help="id tema (nama file JSON tanpa .json)")
+    parser.add_argument("--ambang", type=float, default=0.45, help="ambang batas skor")
+    parser.add_argument("--debug", action="store_true", help="tampilkan kandidat intent")
+    args = parser.parse_args()
 
-    args = parse_args()
     themes = load_themes(BASE_DIR / "themes")
+    if args.tema not in themes:
+        print(f"Tema '{args.tema}' tidak ada. Pilihan: {', '.join(themes)}")
+        return
+    theme = themes[args.tema]
+    bot = ChatbotEngine(theme, args.ambang)
 
-    if args.theme not in themes:
-        available = ", ".join(sorted(themes)) or "(tidak ada)"
-        raise SystemExit(f"Tema '{args.theme}' tidak ditemukan. Pilihan: {available}")
-
-    theme = themes[args.theme]
-    bot = EnergyBotEngine(theme, args.threshold)
-    context = {}
-
-    print(f"{theme['avatar']} {theme['bot_name']} - mode CLI")
-    print(theme["greeting"])
-    print("Ketik 'exit' atau 'keluar' untuk mengakhiri.\n")
-
+    print(f"{theme['avatar']} {theme['bot_name']}: {theme['greeting']}")
+    print("(ketik 'keluar' untuk berhenti)\n")
     while True:
         try:
-            message = input("Anda: ").strip()
+            pesan = input("Anda: ").strip()
         except (EOFError, KeyboardInterrupt):
-            print("\nSampai jumpa!")
+            print()
             break
-
-        if message.lower() in {"exit", "quit", "keluar"}:
-            print("Sampai jumpa!")
+        if pesan.lower() in {"keluar", "exit", "quit"}:
             break
-        if not message:
-            continue
-
-        result = bot.reply(message, context)
-        print(f"{theme['bot_name']}: {result['reply']}\n")
+        hasil = bot.reply(pesan)
+        print(f"{theme['bot_name']}: {hasil['reply']}")
+        label = hasil["intent"] or "tidak dikenali"
+        print(f"   [intent: {label} · skor {hasil['score']:.2f}]")
+        if args.debug:
+            for i, k in enumerate(bot.explain(pesan), 1):
+                print(f"   {i}. {k['intent']:<18} {k['score']:.2f}  pola: \"{k['pattern']}\"")
+        print()
+    print("Sampai jumpa!")
 
 
 if __name__ == "__main__":

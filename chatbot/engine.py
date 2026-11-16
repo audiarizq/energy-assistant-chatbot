@@ -26,6 +26,12 @@ NORMALISASI = {
     "kak": "", "min": "", "dong": "", "sih": "", "nih": "", "ya": "", "yah": "",
     "makasih": "terima kasih", "thanks": "terima kasih", "thx": "terima kasih",
     "hai": "halo", "hi": "halo", "hello": "halo", "hallo": "halo",
+    "listriknya": "listrik", "ngecas": "mengisi daya", "cas": "charger",
+    "tv": "televisi", "kulkas": "kulkas", "kipas": "kipas angin",
+    "acnya": "ac", "nyalain": "menyalakan", "matin": "mematikan",
+    "cabutkan": "mencabut", "colokan": "adaptor", "boros": "pemborosan",
+    "bagaimna": "bagaimana", "bgmn": "bagaimana", "listrk": "listrik",
+    "menghematkan": "menghemat", "perangkatnya": "perangkat",
 }
 
 # Kata henti (stopword) bahasa Indonesia yang sederhana
@@ -66,7 +72,13 @@ def similarity(tokens_a: list[str], tokens_b: list[str]) -> float:
     fuzzy = SequenceMatcher(None, " ".join(tokens_a), " ".join(tokens_b)).ratio()
     # 3) Cakupan: berapa bagian kata pola yang muncul di pesan
     cakupan = len(set_a & set_b) / len(set_b)
-    return round(BOBOT_JACCARD * jaccard + BOBOT_FUZZY * fuzzy + BOBOT_CAKUPAN * cakupan, 4)
+    skor = BOBOT_JACCARD * jaccard + BOBOT_FUZZY * fuzzy + BOBOT_CAKUPAN * cakupan
+    # Pola yang seluruh tokennya muncul merupakan kecocokan eksplisit.
+    # Bonus kecil ini juga membuat aturan yang lebih spesifik menang dari
+    # aturan umum, misalnya "hemat listrik AC" atas "hemat listrik".
+    if set_b.issubset(set_a):
+        skor += 0.08
+    return round(min(skor, 1.0), 4)
 
 
 def validate_theme(theme: dict) -> list[str]:
@@ -125,6 +137,9 @@ class ChatbotEngine:
             for pola in intent["patterns"]
         ]
         self._responses = {i["tag"]: i["responses"] for i in theme["intents"]}
+        # Respons khusus boleh dipetakan ke pola tertentu. Jika tidak ada,
+        # engine tetap memakai respons umum dari intent terkait.
+        self._pattern_responses = theme.get("pattern_responses", {})
 
     def explain(self, pesan: str, top: int = 3) -> list[dict]:
         """Kandidat intent terbaik beserta pola dan skornya (untuk belajar/debug)."""
@@ -138,7 +153,18 @@ class ChatbotEngine:
 
     def classify(self, pesan: str) -> tuple[str | None, float]:
         """Kembalikan (tag_intent, skor). tag None jika di bawah ambang."""
-        kandidat = self.explain(pesan, top=1)
+        kandidat = self.explain(pesan, top=len(self._responses))
+        # AC adalah entitas khusus: jangan memilih intent AC bila pengguna
+        # tidak menyebut AC, dan prioritaskan intent AC saat entitasnya ada.
+        tokens = set(preprocess(pesan))
+        comparison_words = {"mana", "bandingkan", "dibanding", "perbedaan", "lebih"}
+        is_comparison = bool(tokens & comparison_words)
+        if "ac" in tokens and not is_comparison:
+            ac = [k for k in kandidat if k["intent"] == "ac_saving_tips"]
+            if ac and ac[0]["score"] >= self.threshold:
+                return ac[0]["intent"], ac[0]["score"]
+        else:
+            kandidat = [k for k in kandidat if k["intent"] != "ac_saving_tips"]
         if not kandidat:
             return None, 0.0
         best = kandidat[0]
@@ -162,5 +188,10 @@ class ChatbotEngine:
         if tag is None:
             teks = random.choice(self.theme["fallback"])
         else:
-            teks = random.choice(self._responses[tag])
+            kandidat = [c for c in self.explain(pesan, top=len(self._responses))
+                        if c["intent"] == tag]
+            pola_terbaik = kandidat[0]["pattern"] if kandidat else None
+            teks = self._pattern_responses.get(pola_terbaik)
+            if teks is None:
+                teks = random.choice(self._responses[tag])
         return {"reply": self._isi_placeholder(teks), "intent": tag, "score": skor}

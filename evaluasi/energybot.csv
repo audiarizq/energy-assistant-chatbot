@@ -1,21 +1,30 @@
 kalimat,intent
-halo energybot,greeting
-selamat pagi,greeting
-kamu siapa,bot_introduction
-apa saja yang bisa kamu lakukan,bot_introduction
-hitung konsumsi listrik,clarification
-Hitung lampu 15 Watt selama 12 jam sehari,energy_consumption
-berapa konsumsi listrik ac,clarification
-berapa biaya listrik,clarification
-Hitung biaya 100 kWh dengan tarif Rp1.500/kWh,electricity_cost
-tarif listrik per kwh,clarification
-berapa daya listrik kulkas,appliance_information
-apa perbedaan Watt dan kWh,appliance_information
-mana lebih hemat kipas atau ac,energy_comparison
-bandingkan dua perangkat,energy_comparison
-bagaimana cara menghemat listrik,energy_saving_tips
-tips hemat energi,energy_saving_tips
-bagaimana mengurangi tagihan listrik,saving_recommendation
-analisis penggunaan listrik saya,energy_analysis
-terima kasih,goodbye
-buatkan puisi cinta,out_of_scope
+hai bot,greeting
+selamat malam energybot,greeting
+energybot itu apa,bot_introduction
+jelaskan kemampuanmu,bot_introduction
+kenapa harus hemat energi,energy_information
+apa kegunaan energi listrik,energy_information
+watt itu apa,electricity_information
+fungsi meteran kwh,electricity_information
+tv boros listrik tidak,appliance_information
+daya kulkas biasanya berapa,appliance_information
+lebih irit kipas atau pendingin ruangan,energy_comparison
+led dibanding lampu pijar lebih hemat,energy_comparison
+tips umum mengurangi listrik,energy_saving_tips
+gimana biar listrik tidak boros,energy_saving_tips
+ac sebaiknya disetel berapa,ac_saving_tips
+cara membersihkan filter ac,ac_saving_tips
+hemat listrik di dapur bagaimana,household_saving_tips
+apa yang dicek saat keluar rumah,household_saving_tips
+charger perlu dilepas tidak,energy_usage_habits
+televisi sebaiknya dimatikan saat tidak dipakai,energy_usage_habits
+tolong bantu saya,help
+menu pertanyaan energybot,help
+jelaskan lebih lanjut soal listrik,clarification
+perangkat maksudnya apa,clarification
+terima kasih banyak,goodbye
+sampai nanti,goodbye
+resep nasi goreng,fallback
+harga sepeda motor,fallback
+siapa presiden indonesia,fallback

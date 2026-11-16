@@ -1,34 +1,326 @@
 {
   "id": "energybot",
-  "name": "Asisten Hemat Energi",
+  "name": "Asisten Hemat Energi Rumah Tangga",
   "bot_name": "EnergyBot",
   "avatar": "⚡",
-  "color": "#0f766e",
-  "description": "Membantu menghitung konsumsi energi, estimasi biaya, dan penghematan listrik.",
-  "greeting": "Halo! Saya EnergyBot, asisten hemat energi. Saya dapat menghitung konsumsi listrik, memperkirakan biaya, membandingkan perangkat, dan memberi tips penghematan.",
+  "color": "#16805c",
+  "description": "Informasi dan edukasi penghematan energi listrik rumah tangga.",
+  "greeting": "Halo! Saya EnergyBot, asisten informasi dan edukasi hemat energi listrik. Saya dapat membantu tentang perangkat elektronik, listrik rumah tangga, dan tips menghemat energi. Apa yang ingin kamu ketahui?",
   "suggestions": [
-    "Hitung kipas 50 Watt selama 10 jam sehari",
-    "Hitung biaya 100 kWh dengan tarif Rp1.500/kWh",
-    "Bagaimana cara menghemat listrik?",
-    "Apa perbedaan Watt dan kWh?"
+    "Cara menghemat listrik",
+    "Tips hemat listrik AC",
+    "Apa itu Watt dan kWh?",
+    "Mana lebih hemat, kipas atau AC?"
   ],
   "fallback": [
-    "Maaf, saya belum memahami pertanyaan tersebut. Coba tanyakan konsumsi, biaya, perangkat, atau penghematan listrik.",
-    "Saya berfokus pada pengelolaan energi listrik. Contoh: hitung konsumsi lampu 15 Watt selama 12 jam."
+    "Maaf, saya belum memahami pertanyaan tersebut. Saya membantu informasi listrik rumah tangga dan penghematan energi. Coba tanyakan tentang perangkat elektronik atau tips hemat listrik.",
+    "Pertanyaan itu belum ada dalam basis pengetahuan saya. Silakan tanyakan tentang energi, listrik, perangkat elektronik, AC, atau kebiasaan hemat energi."
   ],
+  "pattern_responses": {
+    "apa dampak boros listrik": "Pemakaian listrik yang boros membuat energi terbuang dan dapat meningkatkan beban pengeluaran rumah tangga. Mulailah dengan mematikan perangkat yang tidak digunakan dan memilih pengaturan hemat energi.",
+    "apa keuntungan hemat energi di rumah": "Hemat energi membantu mengurangi pemborosan, membuat perangkat digunakan lebih efisien, dan membangun kebiasaan rumah tangga yang lebih ramah lingkungan.",
+    "fungsi kwh meter": "kWh meter mencatat jumlah energi listrik yang digunakan di rumah. Anda dapat memantau kebiasaan penggunaan listrik melalui catatan meter dan mengurangi pemakaian perangkat yang tidak diperlukan.",
+    "apakah standby tetap memakai listrik": "Ya, sebagian perangkat masih dapat memakai listrik dalam mode standby. Matikan perangkat dari tombol utama atau cabut stekernya jika tidak digunakan dalam waktu lama dan tetap aman dilakukan.",
+    "cara membaca label daya perangkat": "Periksa nilai Watt pada label perangkat dan perhatikan fitur label hemat energi. Untuk menghemat listrik, pilih perangkat yang sesuai kebutuhan dan gunakan hanya selama diperlukan.",
+    "mana lebih hemat kipas angin atau ac": "Kipas angin biasanya menggunakan daya lebih rendah daripada AC. Gunakan kipas saat suhu masih nyaman, dan gunakan AC seperlunya dengan pintu serta jendela tertutup.",
+    "lampu led lebih hemat dari lampu biasa": "Lampu LED umumnya lebih efisien daripada lampu biasa. Gunakan daya lampu sesuai kebutuhan, matikan saat ruangan kosong, dan manfaatkan cahaya alami pada siang hari.",
+    "perbedaan ac inverter dan non inverter": "AC inverter dapat menyesuaikan kerja kompresor setelah suhu ruangan tercapai, sedangkan AC non-inverter bekerja lebih sering dengan pola hidup-mati. Keduanya tetap dipengaruhi ukuran ruangan, perawatan, dan kebiasaan pemakaian.",
+    "berapa suhu ac yang hemat listrik": "Atur AC pada suhu nyaman sekitar 24–26°C, tutup pintu dan jendela, lalu gunakan timer jika tersedia. Suhu yang terlalu rendah membuat AC bekerja lebih berat.",
+    "cara membersihkan filter ac": "Matikan dan cabut sumber listrik sesuai petunjuk keselamatan, lepaskan filter, bersihkan debu dengan hati-hati, keringkan sepenuhnya, lalu pasang kembali sesuai buku panduan.",
+    "tips menggunakan kulkas agar hemat listrik": "Pastikan pintu kulkas tertutup rapat, jangan sering membukanya, jangan memasukkan makanan panas, dan beri ruang sirkulasi di belakang kulkas.",
+    "bagaimana menghemat listrik mesin cuci": "Gunakan mesin cuci saat muatan cukup, pilih program sesuai jenis cucian, hindari menjalankan mesin untuk muatan sangat sedikit, dan manfaatkan pengering alami jika memungkinkan.",
+    "cara hemat listrik saat memasak": "Gunakan ukuran api yang sesuai, tutup panci agar masakan lebih cepat matang, gunakan perangkat dapur sesuai kapasitas, dan matikan alat segera setelah selesai digunakan.",
+    "apakah charger harus dicabut": "Charger yang tidak digunakan sebaiknya dicabut jika aman dilakukan. Selain mengurangi pemakaian standby, kebiasaan ini juga membantu menjaga charger dan mengurangi risiko panas berlebih.",
+    "apa yang harus dilakukan sebelum tidur": "Periksa lampu, televisi, AC, kipas, komputer, charger, dan perangkat lain. Matikan yang tidak diperlukan, tetapi jangan mencabut perangkat penting seperti kulkas.",
+    "langkah pertama untuk mulai hemat listrik": "Mulailah dengan mengamati perangkat yang sering menyala, kemudian matikan lampu dan alat yang tidak digunakan. Setelah itu buat kebiasaan pemeriksaan singkat sebelum tidur dan sebelum meninggalkan rumah.",
+    "cara hemat listrik tanpa membeli alat baru": "Manfaatkan cahaya dan udara alami, kurangi waktu pemakaian perangkat, matikan mode standby, tutup pintu kulkas dengan cepat, dan gunakan AC atau pemanas hanya saat diperlukan.",
+    "mengapa konsumsi listrik perlu dikurangi": "Mengurangi konsumsi yang tidak perlu mencegah pemborosan energi dan membantu perangkat bekerja sesuai kebutuhan. Fokuslah pada kebiasaan sederhana yang dapat dilakukan setiap hari.",
+    "apa yang harus dilihat saat membeli alat elektronik": "Bandingkan kebutuhan, daya, kapasitas, fitur hemat energi, dan label produk. Pilih perangkat yang cukup untuk kebutuhan rumah, bukan sekadar yang paling besar.",
+    "kebiasaan apa yang menyebabkan listrik boros": "Membiarkan lampu, AC, televisi, dan charger menyala tanpa digunakan merupakan kebiasaan boros. Gunakan timer atau pengingat dan matikan perangkat setelah selesai dipakai."
+  },
   "intents": [
-    {"tag":"greeting","patterns":["halo","hai energybot","selamat pagi","selamat siang","selamat sore","apa kabar"],"responses":["Halo! Ada yang ingin kamu hitung atau ketahui tentang penggunaan listrik?","Hai! Saya siap membantu mengelola energi listrik dengan lebih efisien."]},
-    {"tag":"bot_introduction","patterns":["apa itu energybot","fungsi chatbot ini","apa saja yang bisa kamu lakukan","cara menggunakan energybot","kamu siapa"],"responses":["EnergyBot membantu menghitung konsumsi listrik, memperkirakan biaya, membandingkan perangkat, dan memberikan tips penghematan."]},
-    {"tag":"energy_consumption","patterns":["hitung konsumsi listrik","berapa konsumsi listrik ac","berapa kwh televisi","hitung kipas watt jam","konsumsi energi perangkat","hitung penggunaan listrik"],"responses":["Saya akan menghitung konsumsi berdasarkan daya Watt dan durasi penggunaan."]},
-    {"tag":"electricity_cost","patterns":["berapa biaya listrik","hitung biaya listrik","estimasi biaya energi","biaya listrik setiap bulan","konsumsi kwh berapa biayanya","tarif listrik per kwh"],"responses":["Estimasi biaya energi dihitung dari konsumsi kWh dikalikan tarif listrik."]},
-    {"tag":"appliance_information","patterns":["berapa daya listrik kulkas","televisi biasanya berapa watt","ac menggunakan berapa watt","informasi daya perangkat","perbedaan watt dan kwh","apa itu watt dan kwh"],"responses":["Watt adalah satuan daya, sedangkan kWh adalah energi yang digunakan selama periode tertentu. Gunakan label perangkat untuk daya yang paling akurat."]},
-    {"tag":"energy_comparison","patterns":["mana lebih hemat kipas atau ac","bandingkan dua perangkat","bandingkan dua lampu","perangkat mana paling boros","apakah led lebih hemat"],"responses":["Saya dapat membandingkan konsumsi dua perangkat jika daya dan durasi penggunaannya tersedia."]},
-    {"tag":"energy_saving_tips","patterns":["bagaimana cara menghemat listrik","tips hemat energi","bagaimana menghemat listrik ac","bagaimana menghemat listrik kulkas","apakah mematikan perangkat menghemat listrik"],"responses":["Matikan perangkat yang tidak digunakan, gunakan lampu LED, manfaatkan cahaya alami, dan gunakan pengaturan hemat energi bila tersedia."]},
-    {"tag":"saving_recommendation","patterns":["bagaimana mengurangi tagihan listrik","penggunaan listrik terlalu tinggi","saya ingin menghemat persen","perangkat apa yang harus dikurangi","rekomendasi hemat energi"],"responses":["Saya dapat membuat rekomendasi berdasarkan perangkat dengan konsumsi terbesar, durasi pemakaian, dan target penghematan."]},
-    {"tag":"energy_analysis","patterns":["analisis penggunaan listrik saya","total listrik rumah saya","analisis konsumsi energi","apakah penggunaan listrik meningkat","distribusi konsumsi energi"],"responses":["Analisis dapat menampilkan total kWh, kontribusi setiap perangkat, dan perangkat dengan konsumsi tertinggi."]},
-    {"tag":"goodbye","patterns":["terima kasih","sampai jumpa","dadah","sudah cukup","selesai"],"responses":["Sama-sama. Semoga informasi ini membantu penggunaan listrik yang lebih efisien.","Sampai jumpa. Gunakan listrik secara bijak!"]},
-    {"tag":"help","patterns":["apa yang bisa saya tanyakan","bantu saya menggunakan chatbot","contoh perintah","cara memakai chatbot","tolong bantu"],"responses":["Contoh: Hitung konsumsi lampu 12 Watt selama 8 jam sehari, atau hitung biaya 100 kWh dengan tarif Rp1.500/kWh."]},
-    {"tag":"clarification","patterns":["hitung listrik saya","hitung biaya ac","bandingkan perangkat saya","data saya belum lengkap"],"responses":["Saya masih membutuhkan beberapa informasi agar hasilnya dapat dihitung. Mohon lengkapi parameter yang belum disebutkan."]},
-    {"tag":"out_of_scope","patterns":["siapa presiden indonesia","buatkan puisi cinta","bagaimana memperbaiki motor","ceritakan lelucon","resep makanan"],"responses":["Maaf, topik tersebut berada di luar cakupan EnergyBot. Saya dirancang untuk membantu pengelolaan dan penghematan energi listrik."]}
+    {
+      "tag": "greeting",
+      "patterns": [
+        "halo",
+        "hai energybot",
+        "selamat pagi",
+        "selamat siang",
+        "apa kabar kamu",
+        "selamat malam energybot",
+        "halo bot",
+        "hai",
+        "pagi energybot",
+        "permisi energybot"
+      ],
+      "responses": [
+        "Halo! Saya EnergyBot. Ada yang ingin kamu ketahui tentang hemat energi?",
+        "Hai! Saya siap membantu informasi listrik rumah tangga dan penghematan energi."
+      ]
+    },
+    {
+      "tag": "bot_introduction",
+      "patterns": [
+        "apa itu energybot",
+        "apa fungsi chatbot ini",
+        "kamu bisa membantu apa",
+        "cara menggunakan energybot",
+        "energybot untuk apa",
+        "jelaskan kemampuanmu",
+        "kamu chatbot tentang apa",
+        "bisa bantu menghemat listrik tidak",
+        "saya bisa bertanya apa di sini",
+        "jelaskan tentang bot ini"
+      ],
+      "responses": [
+        "EnergyBot adalah chatbot rule-based tentang listrik rumah tangga, perangkat elektronik, dan cara menggunakan energi secara lebih efisien.",
+        "Saya dapat membantu menjelaskan energi listrik, perangkat rumah tangga, perbandingan efisiensi, serta tips menghemat listrik."
+      ]
+    },
+    {
+      "tag": "energy_information",
+      "patterns": [
+        "apa itu energi listrik",
+        "mengapa perlu menghemat energi",
+        "manfaat menghemat listrik",
+        "mengapa listrik harus digunakan bijak",
+        "pengertian energi listrik",
+        "kenapa harus hemat energi",
+        "mengapa konsumsi listrik perlu dikurangi",
+        "apa dampak boros listrik",
+        "kenapa kita harus memakai energi dengan bijak",
+        "hubungan hemat energi dan lingkungan",
+        "apa keuntungan hemat energi di rumah"
+      ],
+      "responses": [
+        "Energi listrik digunakan untuk menjalankan berbagai perangkat elektronik. Penggunaan secara bijak mengurangi pemborosan dan membantu mengendalikan pengeluaran rumah tangga.",
+        "Menghemat energi berarti menggunakan listrik sesuai kebutuhan agar sumber daya dimanfaatkan lebih efisien dan tidak terbuang percuma."
+      ]
+    },
+    {
+      "tag": "electricity_information",
+      "patterns": [
+        "perbedaan watt dan kwh",
+        "apa arti daya listrik",
+        "fungsi kwh meter",
+        "apa itu listrik standby",
+        "pengertian watt kwh",
+        "watt itu apa",
+        "beda daya dan energi listrik",
+        "mengapa meteran listrik memakai kwh",
+        "apa arti tulisan watt pada alat elektronik",
+        "apakah standby tetap memakai listrik",
+        "cara membaca label daya perangkat"
+      ],
+      "responses": [
+        "Watt adalah satuan daya listrik, sedangkan kilowatt-hour atau kWh adalah satuan energi listrik dalam periode tertentu. Lama pemakaian juga memengaruhi energi yang digunakan.",
+        "kWh meter mencatat energi listrik yang digunakan. Daya lebih besar belum tentu memakai energi paling banyak jika waktu pemakaiannya lebih singkat."
+      ]
+    },
+    {
+      "tag": "appliance_information",
+      "patterns": [
+        "berapa daya ac biasanya",
+        "informasi tentang kulkas",
+        "apakah televisi banyak listrik",
+        "mode standby perangkat",
+        "karakteristik perangkat elektronik",
+        "tv boros listrik tidak",
+        "cara mengetahui alat yang paling boros",
+        "bagaimana memilih alat elektronik hemat energi",
+        "apa yang harus dilihat saat membeli alat elektronik",
+        "apakah alat elektronik lama lebih boros",
+        "mengapa perangkat tetap memakai listrik saat mati"
+      ],
+      "responses": [
+        "Daya perangkat berbeda menurut merek, model, ukuran, dan teknologi. Periksa label daya atau buku manual untuk mengetahui spesifikasi yang tepat.",
+        "Konsumsi perangkat dipengaruhi daya dan lama penggunaan. Mode standby tetap dapat menggunakan sedikit listrik, sehingga matikan perangkat bila tidak diperlukan."
+      ]
+    },
+    {
+      "tag": "energy_comparison",
+      "patterns": [
+        "mana lebih hemat kipas angin atau ac",
+        "lampu led lebih hemat dari lampu biasa",
+        "perbedaan ac inverter dan non inverter",
+        "perangkat yang paling efisien",
+        "bandingkan perangkat hemat listrik",
+        "lebih hemat lampu led atau neon",
+        "lebih irit kulkas satu pintu atau dua pintu",
+        "apa kelebihan ac inverter untuk hemat energi",
+        "bagaimana membandingkan konsumsi dua perangkat",
+        "perangkat rumah tangga mana yang paling efisien"
+      ],
+      "responses": [
+        "Efisiensi bergantung pada teknologi, kapasitas, kondisi, dan cara penggunaan. Kipas angin umumnya memakai daya lebih rendah daripada AC, tetapi kenyamanan dan fungsinya berbeda.",
+        "Lampu LED umumnya lebih hemat dibanding lampu biasa. Untuk perbandingan yang tepat, periksa label energi dan spesifikasi produk."
+      ]
+    },
+    {
+      "tag": "energy_saving_tips",
+      "patterns": [
+        "bagaimana cara menghemat listrik",
+        "cara menghemat listrik",
+        "berikan tips hemat energi",
+        "cara mengurangi pemborosan listrik",
+        "kebiasaan sederhana hemat listrik",
+        "tips menghemat energi rumah",
+        "gimana biar listrik tidak boros",
+        "langkah pertama untuk mulai hemat listrik",
+        "cara hemat listrik tanpa membeli alat baru",
+        "buatkan daftar kebiasaan hemat energi",
+        "bagaimana mengurangi pemakaian listrik sehari-hari",
+        "tips hemat energi untuk keluarga",
+        "cara menghemat listrik setiap hari"
+      ],
+      "responses": [
+        "Matikan perangkat yang tidak digunakan, gunakan lampu LED, manfaatkan cahaya alami, cabut adaptor yang tidak diperlukan, dan pilih perangkat yang efisien.",
+        "Gunakan listrik sesuai kebutuhan, matikan lampu di ruangan kosong, dan manfaatkan fitur hemat energi pada perangkat jika tersedia.",
+        "Mulailah dari kebiasaan kecil: matikan lampu saat ruangan kosong, cabut charger setelah digunakan, batasi waktu menonton, dan gunakan cahaya matahari pada siang hari.",
+        "Buat pemeriksaan singkat setiap pagi dan malam untuk memastikan lampu, AC, televisi, komputer, dan charger yang tidak diperlukan sudah dimatikan.",
+        "Prioritaskan penghematan tanpa mengurangi keselamatan: gunakan perangkat sesuai petunjuk, rawat secara berkala, dan pilih produk berlabel hemat energi saat perlu mengganti perangkat."
+      ]
+    },
+    {
+      "tag": "ac_saving_tips",
+      "patterns": [
+        "bagaimana menghemat listrik ac",
+        "cara menghemat listrik ac",
+        "suhu ac sebaiknya berapa",
+        "cara merawat ac agar efisien",
+        "filter ac harus dibersihkan",
+        "tips hemat energi saat memakai ac",
+        "cara membersihkan filter ac",
+        "apakah suhu ac 16 derajat boros",
+        "berapa suhu ac yang hemat listrik",
+        "kapan filter ac perlu dicuci",
+        "bolehkah menyalakan ac dengan pintu terbuka",
+        "cara membuat ac tidak boros",
+        "perawatan ac agar dinginnya tetap optimal",
+        "lebih hemat ac atau kipas untuk kamar"
+      ],
+      "responses": [
+        "Atur suhu AC pada tingkat yang nyaman dan tidak terlalu rendah, tutup pintu serta jendela, bersihkan filter berkala, dan matikan AC saat ruangan tidak digunakan lama.",
+        "Perawatan filter dan penggunaan AC secara bijak membantu menjaga efisiensi. Hindari membiarkan pintu atau jendela terbuka saat AC menyala.",
+        "Atur AC sekitar 24–26°C atau pada suhu nyaman, gunakan timer bila tersedia, dan jangan langsung menyetel suhu paling rendah karena belum tentu membuat ruangan lebih cepat dingin.",
+        "Bersihkan filter secara berkala sesuai buku panduan. Filter kotor membuat aliran udara terhambat sehingga AC bekerja lebih berat.",
+        "Sebelum menyalakan AC, tutup pintu dan jendela serta kurangi sumber panas seperti lampu yang tidak diperlukan agar ruangan lebih cepat nyaman."
+      ]
+    },
+    {
+      "tag": "household_saving_tips",
+      "patterns": [
+        "cara menghemat listrik di dapur",
+        "hemat listrik di dapur bagaimana",
+        "tips hemat listrik kamar tidur",
+        "menghemat listrik saat mencuci",
+        "apa yang dilakukan sebelum meninggalkan rumah",
+        "hemat listrik berdasarkan ruangan",
+        "apa yang dicek saat keluar rumah",
+        "cara hemat listrik saat memasak",
+        "tips menggunakan kulkas agar hemat listrik",
+        "bagaimana menghemat listrik mesin cuci",
+        "tips hemat energi di ruang keluarga",
+        "cara hemat listrik di kamar mandi",
+        "apa yang dilakukan saat rumah kosong",
+        "cara mengatur penggunaan alat elektronik di rumah"
+      ],
+      "responses": [
+        "Di rumah, gunakan perangkat sesuai kebutuhan, jangan terlalu sering membuka kulkas, gunakan mesin cuci sesuai muatan, dan matikan lampu di ruangan kosong.",
+        "Sebelum meninggalkan rumah, periksa lampu, televisi, AC, kipas, charger, dan perangkat lain yang tidak perlu tetap menyala.",
+        "Untuk kulkas, pastikan pintu tertutup rapat, jangan memasukkan makanan panas, dan beri ruang sirkulasi di belakangnya agar bekerja lebih efisien.",
+        "Gunakan mesin cuci saat muatannya cukup, pilih program sesuai kebutuhan, dan manfaatkan pengering matahari jika cuaca memungkinkan.",
+        "Di dapur, gunakan ukuran api yang sesuai, tutup panci saat memasak, dan matikan kompor atau perangkat listrik segera setelah selesai digunakan."
+      ]
+    },
+    {
+      "tag": "energy_usage_habits",
+      "patterns": [
+        "kebiasaan yang membuat listrik boros",
+        "apakah charger harus dicabut",
+        "perlukah mematikan tv saat tidak ditonton",
+        "apa yang dimatikan sebelum tidur",
+        "kebiasaan penggunaan listrik yang baik",
+        "charger perlu dilepas tidak",
+        "televisi sebaiknya dimatikan saat tidak dipakai",
+        "apakah lampu harus dimatikan saat siang",
+        "kebiasaan apa yang menyebabkan listrik boros",
+        "perlu cabut colokan setelah memakai alat",
+        "apakah membiarkan kipas menyala itu boros",
+        "apa yang harus dilakukan sebelum tidur",
+        "bagaimana membiasakan keluarga hemat listrik"
+      ],
+      "responses": [
+        "Matikan lampu dan perangkat yang tidak digunakan, jangan membiarkan perangkat menyala tanpa kebutuhan, gunakan mode hemat energi, dan cabut charger jika aman.",
+        "Sebelum tidur, periksa perangkat yang masih menyala. Charger yang tidak digunakan sebaiknya dicabut sesuai petunjuk keamanan perangkat.",
+        "Jadikan mematikan lampu dan perangkat sebagai kebiasaan setelah keluar ruangan. Tempelkan pengingat di dekat sakelar jika keluarga sering lupa.",
+        "Gunakan satu terminal listrik dengan sakelar untuk perangkat yang berdekatan, tetapi jangan membebani terminal dan tetap ikuti batas keamanan produknya.",
+        "Hemat energi bukan berarti mengabaikan keselamatan. Jangan mencabut perangkat dengan tangan basah dan segera periksa kabel atau colokan yang rusak."
+      ]
+    },
+    {
+      "tag": "help",
+      "patterns": [
+        "apa yang bisa saya tanyakan",
+        "bantuan energybot",
+        "tampilkan menu",
+        "topik apa yang tersedia",
+        "bantuan",
+        "tolong bantu saya",
+        "menu pertanyaan energybot",
+        "berikan contoh pertanyaan",
+        "topik hemat energi apa saja",
+        "saya butuh saran hemat listrik",
+        "bantu saya memilih topik"
+      ],
+      "responses": [
+        "Kamu dapat bertanya tentang energi listrik, konsep Watt dan kWh, perangkat elektronik, perbandingan perangkat, tips hemat listrik, penggunaan AC, dan kebiasaan hemat energi.",
+        "Topik yang tersedia: informasi listrik, perangkat rumah tangga, lampu, kulkas, televisi, kipas, AC, tips hemat energi, dan aktivitas rumah tangga."
+      ]
+    },
+    {
+      "tag": "clarification",
+      "patterns": [
+        "ceritakan tentang listrik",
+        "saya ingin tahu tentang perangkat",
+        "bagaimana caranya",
+        "berikan informasi lebih lanjut",
+        "jelaskan lebih banyak",
+        "perangkat maksudnya apa",
+        "jelaskan dengan contoh",
+        "maksud hemat energi itu apa",
+        "saya ingin penjelasan yang sederhana",
+        "yang harus saya lakukan apa",
+        "bisa dijelaskan lebih jelas"
+      ],
+      "responses": [
+        "Agar saya dapat membantu dengan tepat, topik mana yang kamu maksud: informasi energi listrik, perangkat elektronik, atau tips menghemat listrik?",
+        "Boleh diperjelas? Kamu ingin mengetahui konsep listrik, perangkat tertentu, atau cara menghemat energi di rumah?"
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": [
+        "terima kasih",
+        "sampai jumpa",
+        "dadah",
+        "sudah cukup",
+        "selesai"
+      ],
+      "responses": [
+        "Sama-sama! Terima kasih telah menggunakan EnergyBot. Gunakan energi listrik secara bijak.",
+        "Sampai jumpa! Semoga tips EnergyBot membantu menghemat energi di rumah."
+      ]
+    },
+    {
+      "tag": "fallback",
+      "patterns": [
+        "pertanyaan di luar topik energybot"
+      ],
+      "responses": [
+        "Maaf, saya hanya dapat membantu topik informasi dan penghematan energi listrik rumah tangga.",
+        "Topik tersebut di luar cakupan EnergyBot. Silakan tanyakan tentang listrik, perangkat elektronik, atau hemat energi."
+      ]
+    }
   ]
 }

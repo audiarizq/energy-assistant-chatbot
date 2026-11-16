@@ -1,18 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}{{ theme.bot_name }} &middot; EnergyBot{% endblock %}
+{% block title %}Chat EnergyBot{% endblock %}
 {% block color %}{{ theme.color }}{% endblock %}
 
 {% block content %}
 <section class="chat-card">
-  <button id="btn-clear" class="btn-clear" type="button">Hapus riwayat</button>
-
   <div class="chat-header">
-    <div class="avatar">{{ theme.avatar }}</div>
-    <div class="chat-title">
-      <h1>{{ theme.bot_name }}</h1>
-      <p>{{ theme.name }}</p>
-    </div>
+    <h1>EnergyBot</h1>
+    <button id="btn-clear" class="btn-secondary" type="button">Hapus riwayat</button>
   </div>
 
   <!-- Area pesan: diisi oleh JavaScript -->
@@ -29,10 +24,11 @@
     <input id="chat-input" type="text" placeholder="Ketik pesan..." maxlength="500" required>
     <button type="submit">Kirim</button>
   </form>
-
-  <label class="learn-toggle">
-    <input type="checkbox" id="learn-mode"> Mode belajar
-  </label>
+  <div class="chat-options">
+    <label class="learn-toggle">
+      <input type="checkbox" id="learn-mode"> Mode belajar
+    </label>
+  </div>
 </section>
 {% endblock %}
 

@@ -19,7 +19,8 @@ CREATE INDEX IF NOT EXISTS idx_session_theme ON messages (session_id, theme);
 
 class ChatHistory:
     def __init__(self, db_path: str | Path):
-        self.db_path = str(db_path)
+        self.db_path = str(Path(db_path).resolve())
+        Path(self.db_path).parent.mkdir(parents=True, exist_ok=True)
         with self._connect() as conn:
             conn.executescript(SKEMA)
 
@@ -44,15 +45,15 @@ class ChatHistory:
         return [dict(r) for r in reversed(rows)]
 
     def clear(self, session_id, theme):
+        """Hapus data satu sesi (dipakai hanya oleh tool internal)."""
         with self._connect() as conn:
             conn.execute("DELETE FROM messages WHERE session_id = ? AND theme = ?",
                          (session_id, theme))
 
     def clear_theme(self, theme):
-        """Hapus seluruh riwayat percakapan untuk satu tema."""
+        """Hapus seluruh pertanyaan pengguna untuk satu tema."""
         with self._connect() as conn:
-            result = conn.execute("DELETE FROM messages WHERE theme = ?", (theme,))
-            return result.rowcount
+            conn.execute("DELETE FROM messages WHERE theme = ?", (theme,))
 
     def stats(self, theme):
         """Jumlah pertanyaan pengguna per intent (bahan evaluasi)."""

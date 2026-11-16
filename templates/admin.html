@@ -7,25 +7,25 @@
 <section class="admin">
   <div class="admin-heading">
     <div>
-      <p class="eyebrow">DASHBOARD ADMIN</p>
-      <h1>{{ theme.avatar }} Statistik &middot; {{ theme.name }}</h1>
-      <p class="muted">Pantau performa chatbot dan temukan pertanyaan yang belum dipahami bot. Ambang pengenalan: <code>{{ threshold }}</code>.</p>
+      <h1>Dashboard Admin</h1>
+      <p class="muted">Data pertanyaan pengguna EnergyBot. Ambang pengenalan: {{ threshold }}.</p>
     </div>
-    <a class="btn-primary" href="{{ url_for('chat_page', theme_id=theme.id) }}">&larr; Kembali ke chat</a>
+    <button id="btn-delete-all" class="danger-button" type="button">Hapus seluruh data</button>
   </div>
 
   <div class="stat-grid">
-    <div class="stat"><span class="stat-label">TOTAL PERTANYAAN</span><span class="stat-num">{{ summary.total }}</span><span class="stat-note">Semua pertanyaan pengguna</span></div>
-    <div class="stat stat-success"><span class="stat-label">TINGKAT DIKENALI</span><span class="stat-num">{{ summary.persen_dikenali }}%</span><span class="stat-note">Berhasil dipahami bot</span></div>
-    <div class="stat stat-warning"><span class="stat-label">TIDAK DIKENALI</span><span class="stat-num">{{ summary.tidak_dikenali }}</span><span class="stat-note">Perlu ditinjau</span></div>
-    <div class="stat"><span class="stat-label">JUMLAH SESI</span><span class="stat-num">{{ summary.sesi }}</span><span class="stat-note">Pengunjung unik</span></div>
+    <div class="stat"><span class="stat-num">{{ summary.total }}</span><span>pertanyaan</span></div>
+    <div class="stat"><span class="stat-num">{{ summary.persen_dikenali }}%</span><span>dikenali</span></div>
+    <div class="stat"><span class="stat-num">{{ summary.tidak_dikenali }}</span><span>tidak dikenali</span></div>
+    <div class="stat"><span class="stat-num">{{ summary.sesi }}</span><span>pengunjung (sesi)</span></div>
   </div>
 
-  <div class="section-heading">
-    <div><h2>Statistik per intent</h2><p class="muted">Jumlah pertanyaan berdasarkan kategori yang dikenali.</p></div>
+  <h2>Jumlah pertanyaan per intent</h2>
+  <div class="chart-card">
+    <canvas id="intent-chart" aria-label="Grafik jumlah pertanyaan per intent"></canvas>
   </div>
   {% if stats %}
-  <div class="table-wrap"><table class="table">
+  <table class="table">
     <thead><tr><th>Intent</th><th>Jumlah</th><th>Proporsi</th></tr></thead>
     <tbody>
     {% for s in stats %}
@@ -36,39 +36,43 @@
       </tr>
     {% endfor %}
     </tbody>
-  </table></div>
+  </table>
   {% else %}
   <p class="muted">Belum ada percakapan untuk tema ini.</p>
   {% endif %}
 
-  <div class="section-heading unknown-heading">
-    <div><h2>Pertanyaan tidak dikenali</h2><p class="muted">Pertanyaan terbaru yang dapat digunakan untuk memperkaya pola chatbot.</p></div>
-  </div>
+  <h2>Pertanyaan yang tidak dikenali (terbaru)</h2>
   {% if unknown %}
-  <div class="table-wrap"><table class="table">
-    <thead><tr><th>Pertanyaan</th><th>Skor tertinggi</th><th>Waktu</th><th></th></tr></thead>
+  <table class="table">
+    <thead><tr><th>Pertanyaan</th><th>Skor tertinggi</th><th>Waktu</th></tr></thead>
     <tbody>
     {% for u in unknown %}
-      <tr><td class="question-text">{{ u.text }}</td><td>{{ "%.2f" | format(u.score or 0) }}</td><td>{{ u.created_at }}</td><td><button class="copy-question" type="button" data-question="{{ u.text }}">Salin</button></td></tr>
+      <tr><td>{{ u.text }}</td><td>{{ "%.2f" | format(u.score or 0) }}</td><td>{{ u.created_at }}</td></tr>
     {% endfor %}
     </tbody>
-  </table></div>
+  </table>
   {% else %}
   <p class="muted">Tidak ada. Semua pertanyaan dikenali.</p>
   {% endif %}
 
+  <p><a href="{{ url_for('chat_page', theme_id=theme.id) }}">&larr; Kembali ke chat</a></p>
 </section>
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  document.querySelectorAll('.copy-question').forEach((button) => {
-    button.addEventListener('click', async () => {
-      await navigator.clipboard.writeText(button.dataset.question);
-      const original = button.textContent;
-      button.textContent = 'Tersalin';
-      setTimeout(() => { button.textContent = original; }, 1200);
-    });
+  const labels = {{ stats | map(attribute='intent') | list | tojson }};
+  const values = {{ stats | map(attribute='jumlah') | list | tojson }};
+  new Chart(document.getElementById('intent-chart'), {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'Pertanyaan', data: values, backgroundColor: '#16805c' }] },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+  document.getElementById("btn-delete-all").addEventListener("click", async () => {
+    if (!confirm("Hapus seluruh data pertanyaan dari database?")) return;
+    const res = await fetch("{{ url_for('api_admin_clear_history', theme_id=theme.id) }}", { method: "DELETE" });
+    if (res.ok) window.location.reload();
   });
 </script>
 {% endblock %}

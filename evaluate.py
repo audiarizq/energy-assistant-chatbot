@@ -2,18 +2,18 @@
 Evaluasi akurasi chatbot dengan data uji (kalimat yang TIDAK ada di file tema).
 
 File data uji: evaluasi/<tema>.csv berkolom: kalimat,intent
-Gunakan intent "fallback" atau intent penolakan tema, misalnya "out_of_scope".
+Gunakan intent "fallback" untuk pertanyaan di luar tema (bot seharusnya menolak).
 
 Contoh:
-    python evaluate.py --tema energybot
-    python evaluate.py --tema energybot --sweep      # coba banyak ambang batas
+    python evaluate.py --tema kampus
+    python evaluate.py --tema kampus --sweep      # coba banyak ambang batas
 """
 import argparse
 import csv
 from collections import Counter
 from pathlib import Path
 
-from chatbot import ChatbotEngine, EnergyBotEngine, load_themes
+from chatbot import ChatbotEngine, load_themes
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -25,14 +25,11 @@ def baca_data(tema):
 
 
 def evaluasi(theme, data, ambang):
-    # Gunakan engine khusus agar aturan perhitungan EnergyBot ikut diuji.
-    bot_class = EnergyBotEngine if theme.get("id") == "energybot" else ChatbotEngine
-    bot = bot_class(theme, ambang)
+    bot = ChatbotEngine(theme, ambang)
     hasil = []
     for kalimat, harapan in data:
-        hasil_bot = bot.reply(kalimat, {})
-        tebakan = hasil_bot["intent"] or "fallback"
-        skor = hasil_bot["score"]
+        tebakan, skor = bot.classify(kalimat)
+        tebakan = tebakan or "fallback"
         hasil.append((kalimat, harapan, tebakan, skor))
     benar = sum(1 for _, h, t, _ in hasil if h == t)
     return benar / len(hasil), hasil
@@ -43,8 +40,6 @@ def main():
     parser.add_argument("--tema", default="energybot")
     parser.add_argument("--ambang", type=float, default=0.45)
     parser.add_argument("--sweep", action="store_true", help="bandingkan beberapa ambang")
-    parser.add_argument("--output", default=str(BASE_DIR / "evaluate.csv"),
-                        help="lokasi file hasil evaluasi (default: evaluate.csv)")
     args = parser.parse_args()
 
     theme = load_themes(BASE_DIR / "themes")[args.tema]
@@ -59,7 +54,7 @@ def main():
         return
 
     akurasi, hasil = evaluasi(theme, data, args.ambang)
-    print(f"Tema {args.tema} - ambang {args.ambang} - {len(data)} kalimat uji")
+    print(f"Tema {args.tema} · ambang {args.ambang} · {len(data)} kalimat uji")
     print(f"Akurasi: {akurasi:.1%}\n")
 
     total = Counter(h for _, h, _, _ in hasil)
@@ -73,13 +68,6 @@ def main():
         print("\nKalimat yang salah ditebak:")
         for kalimat, harapan, tebakan, skor in salah:
             print(f"- \"{kalimat}\" -> {tebakan} ({skor:.2f}), seharusnya {harapan}")
-
-    with open(args.output, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(["kalimat", "intent_diharapkan", "intent_prediksi", "skor", "benar"])
-        for kalimat, harapan, tebakan, skor in hasil:
-            writer.writerow([kalimat, harapan, tebakan, f"{skor:.4f}", harapan == tebakan])
-    print(f"\nHasil tersimpan di: {args.output}")
 
 
 if __name__ == "__main__":

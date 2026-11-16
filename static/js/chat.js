@@ -7,6 +7,14 @@ const form = document.getElementById("chat-form");
 const input = document.getElementById("chat-input");
 const btnClear = document.getElementById("btn-clear");
 const learnMode = document.getElementById("learn-mode");
+const STORAGE_KEY = `energybot-chat-${THEME.id}`;
+
+/** Simpan satu pesan lengkap di browser tanpa menghapus data SQLite. */
+function saveLocalMessage(sender, text, meta = null) {
+  const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  history.push({ sender, text, meta });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+}
 
 /** Tambahkan satu gelembung pesan ke layar. */
 function addMessage(sender, text, meta) {
@@ -76,12 +84,12 @@ async function sendMessage(text) {
       addMessage("bot", `⚠️ ${data.error}`);
       return;
     }
-    const meta = learnMode.checked
-      ? (data.intent
-        ? `intent: ${data.intent} · skor ${data.score.toFixed(2)}`
-        : `tidak dikenali · skor ${data.score.toFixed(2)}`)
-      : null;
+    const meta = data.intent
+      ? `intent: ${data.intent} · skor ${data.score.toFixed(2)}`
+      : `tidak dikenali · skor ${data.score.toFixed(2)}`;
     const bubble = addMessage("bot", data.reply, meta);
+    saveLocalMessage("user", text);
+    saveLocalMessage("bot", data.reply, meta);
     if (learnMode.checked) await showCandidates(bubble, text);
   } catch (err) {
     typing.remove();
@@ -95,13 +103,21 @@ async function sendMessage(text) {
 
 /** Muat riwayat percakapan saat halaman dibuka. */
 async function loadHistory() {
-  const res = await fetch(`/api/history/${THEME.id}`);
-  const rows = await res.json();
-  if (rows.length === 0) {
-    addMessage("bot", THEME.greeting);
+  const localRows = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  if (localRows.length > 0) {
+    localRows.forEach((r) => addMessage(r.sender, r.text, r.meta));
     return;
   }
-  rows.forEach((r) => addMessage(r.sender, r.text));
+
+  // Fallback untuk pertanyaan lama yang sudah tersimpan di SQLite sebelum
+  // riwayat lengkap browser diaktifkan. Respons bot lama memang tidak ada.
+  const res = await fetch(`/api/history/${THEME.id}`);
+  if (!res.ok) return;
+  const rows = await res.json();
+  rows.forEach((r) => {
+    addMessage(r.sender, r.text);
+    saveLocalMessage(r.sender, r.text);
+  });
 }
 
 // ---- Event listener ------------------------------------------------
@@ -118,9 +134,8 @@ document.querySelectorAll(".chip").forEach((chip) => {
 });
 
 btnClear.addEventListener("click", async () => {
-  await fetch(`/api/history/${THEME.id}`, { method: "DELETE" });
   messagesEl.innerHTML = "";
-  addMessage("bot", THEME.greeting);
+  localStorage.removeItem(STORAGE_KEY);
 });
 
 loadHistory();
